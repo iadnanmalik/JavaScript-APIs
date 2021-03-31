@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>
+        Hello
+    </h1>
+    <p>
+        latitude: <span id="latitude"></span>&deg;<br />
+        longitude: <span id="longitude"></span>&deg;
+      </p>
+      <button onclick="enterData()"> Send Lat Long</button>
+</body>
+<script>
+    if('geolocation' in navigator) {
+  /* geolocation is available */
+  console.log("Geo Location Available")
+  function enterData(){
+  navigator.geolocation.getCurrentPosition( async (position) => {
+  //console.log((position.coords.latitude));
+  //console.log((position.coords.longitude));
+  lat = position.coords.latitude;
+      lon = position.coords.longitude;
+      console.log(lat, lon);
+      document.getElementById('latitude').textContent = lat;
+      document.getElementById('longitude').textContent = lon;
+      const data = { lat, lon };
+    const options = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data)
+    };
+    const response = await fetch('/api', options);
+    console.log(response);
+        
+    
+});
+}
+} else {
+  /* geolocation IS NOT available */
+  console.log("Not Available")
+}
+</script>
+</html>
